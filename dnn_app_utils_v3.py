@@ -279,7 +279,7 @@ def compute_cost(AL, Y):
 
     # Compute loss from aL and y.
     #cost = (1./m) * (-np.dot(Y,np.log(AL).T) - np.dot(1-Y, np.log(1-AL).T))
-    cost = np.sum(np.multiply( - np.log(AL), Y))
+    cost = (1/m) * np.sum(np.multiply( - np.log(AL), Y))
     cost = np.squeeze(cost)      # To make sure your cost's shape is what we expect (e.g. this turns [[17]] into 17).
     assert(cost.shape == ())
 
@@ -419,17 +419,15 @@ def predict(X, y, parameters):
     probas, caches = L_model_forward(X, parameters)
 
 
-    # convert probas to 0/1 predictions
-    # for i in range(0, probas.shape[1]):
-    #     if probas[0,i] > 0.2:
-    #         p[0,i] = 1
-    #     else:
-    #         p[0,i] = 0
+    #convert probas to 0/1 predictions
+    for i in range(0, probas.shape[1]):
+        max_index = np.argmax(probas[:,i])
+        p[max_index, i] = 1
 
-    #print results
-    #print ("predictions: " + str(p))
-    #print ("true labels: " + str(y))
-    #print("Accuracy: "  + str(np.sum((p == y)/m)))
+    #results
+    print ("predictions: " + str(p))
+    print ("true labels: " + str(y))
+    print("Accuracy: "  + str(np.sum((p == y)/m)))
 
     return probas
 
